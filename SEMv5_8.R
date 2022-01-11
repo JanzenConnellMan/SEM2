@@ -96,7 +96,7 @@ for(mm in 1:TimeSteps){
     
     #Distance.Func(X,Y,Dimension,Matrix,Focal_Species,Alpha,Decay,Dist_Avg)
     
-    Rad <- 55
+    Rad <- 35
     M   <- mat.torus(Mat.S2,Rad,x.val[x],y.val[x])
     Xb   <- (Rad+1)/2
     Yb   <- (Rad+1)/2
