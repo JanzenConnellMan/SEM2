@@ -29,8 +29,7 @@ mat.torus <- function(Matrix,Rad,xcord,ycord){      # Torus of Space
 Distance.Func <- function(FC,Alpha,M,Yb,Xb){
   
   Ind      <- data.frame(which(M==FC, arr.ind=TRUE))
-  DIST     <- min(sqrt( (Ind$row  - Xb)^2 + (Ind$col  - Yb)^2 ))
-  return(Alpha*exp(-R*(DIST)*d_A))
+  return(Alpha*sum(exp(-R*( sqrt( (Ind$row  - Xb)^2 + (Ind$col  - Yb)^2 ) )*d_A)))
   
   
 }
@@ -42,25 +41,23 @@ dm <- 275
 S <- 300
 S.list <- seq(1:S)
 TimeSteps <- 25000
-#r2 <- raster(xmn = 0, xmx = dm, ymn = 0, ymx = dm, nrows =dm, ncols = dm)
 dd <- sample(1:S, dm*dm, replace = TRUE)
-#r2[] <- dd
 
 Mat.S <- matrix(dd,nrow=dm,ncol=dm)
 df.Props                <- data.frame( matrix(NA,ncol=S+1,nrow=(1+TimeSteps) ))
 df.Props[,1]            <- seq(1:(TimeSteps+1))
 df.Props[1,2:(S+1)]     <- c(table(Mat.S))/(dm*dm)
 
-A <-  seq(.5,.5,length=S)
+A <-  seq(2.75,2.75,length=S)
 
 
 set.seed(150)
-Y <- rlnorm(S,mean=0,sd=.45)
+Y <- rlnorm(S,mean=0,sd=1)
 names(Y) <- seq(1:S)
 
 d <- rep(1,S)
 Dist.Rate <- .0025
-R <- 1/5
+R <- 1/10
 d_A <- 1/sqrt(.2)
 
 
@@ -96,7 +93,7 @@ for(mm in 1:TimeSteps){
     
     #Distance.Func(X,Y,Dimension,Matrix,Focal_Species,Alpha,Decay,Dist_Avg)
     
-    Rad <- 35
+    Rad <- 75
     M   <- mat.torus(Mat.S2,Rad,x.val[x],y.val[x])
     Xb   <- (Rad+1)/2
     Yb   <- (Rad+1)/2
@@ -142,8 +139,8 @@ for(mm in 1:TimeSteps){
 df.PropsM <- as.matrix(df.Props)
 
 
-write.csv(df.PropsM,"TS_v5_A05_Y45_Near.csv",quote=F,row.names=F)
-write.csv(Mat.S,"DIST_v5_A05_Y45_Near.csv",quote=F,row.names=F)
+write.csv(df.PropsM,"TS_v10_A275_Y10.csv",quote=F,row.names=F)
+write.csv(Mat.S,"DIST_v10_A275_Y10.csv",quote=F,row.names=F)
 
 
 
