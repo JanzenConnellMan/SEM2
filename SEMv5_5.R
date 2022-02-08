@@ -2,6 +2,7 @@ filepath="~/Validation/Outputs"
 setwd(filepath)
 
 
+
 mat.torus <- function(Matrix,Rad,xcord,ycord){      # Torus of Space
   
   dm    <- nrow(Matrix)                               # dimension of matrix (n x n marix, so rows = col)
@@ -29,7 +30,8 @@ mat.torus <- function(Matrix,Rad,xcord,ycord){      # Torus of Space
 Distance.Func <- function(FC,Alpha,M,Yb,Xb){
   
   Ind      <- data.frame(which(M==FC, arr.ind=TRUE))
-  return(Alpha*sum(exp(-R*( sqrt( (Ind$row  - Xb)^2 + (Ind$col  - Yb)^2 ) )*d_A)))
+  DIST     <- min(sqrt( (Ind$row  - Xb)^2 + (Ind$col  - Yb)^2 ))
+  return(Alpha*exp(-R*(DIST)*d_A))
   
   
 }
@@ -41,7 +43,9 @@ dm <- 275
 S <- 300
 S.list <- seq(1:S)
 TimeSteps <- 25000
+#r2 <- raster(xmn = 0, xmx = dm, ymn = 0, ymx = dm, nrows =dm, ncols = dm)
 dd <- sample(1:S, dm*dm, replace = TRUE)
+#r2[] <- dd
 
 Mat.S <- matrix(dd,nrow=dm,ncol=dm)
 df.Props                <- data.frame( matrix(NA,ncol=S+1,nrow=(1+TimeSteps) ))
@@ -139,8 +143,8 @@ for(mm in 1:TimeSteps){
 df.PropsM <- as.matrix(df.Props)
 
 
-write.csv(df.PropsM,"TS_v75_A275_Y10.csv",quote=F,row.names=F)
-write.csv(Mat.S,"DIST_v75_A275_Y10.csv",quote=F,row.names=F)
+write.csv(df.PropsM,"TS_v75_A275_Y10_Near.csv",quote=F,row.names=F)
+write.csv(Mat.S,"DIST_v75_A275_Y10_Near.csv",quote=F,row.names=F)
 
 
 
